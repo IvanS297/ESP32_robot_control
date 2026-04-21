@@ -8,12 +8,6 @@ This is a fork of the original code, with some changes, and removal of the ROS n
 As I only have need for a subset of the functionality, I have no idea what does and doesn't work, beyond what is detailed below.
 Feedback/improvements are welcome (though no promises on how quickly I'll respond). I currently only use the L298N driver, and the Arduino encoder mode.
 
-
-
-TODO
-- Finish this README
-
-
 ## Functionality
 
 The main functionality provided is to receive motor speed requests over a serial connection, and provide encoder feedback.
@@ -27,22 +21,22 @@ The main commands to know are
 - `m <Spd1> <Spd2>` - Set the closed-loop speed of each motor in *counts per loop* (Default loop rate is 30, so `(counts per sec)/30`
 - `p <Kp> <Kd> <Ki> <Ko>` - Update the PID parameters
 
+(весь функционал рабочий)
 
 ## Gotchas
 
 Some quick things to note
 
 - There is an auto timeout (default 2s) so you need to keep sending commands for it to keep moving
-- PID parameter order is PDI (?)
+- PID parameter order is PID
 - Motor speed is in counts per loop
-- Default baud rate 57600
-- Needs carriage return (CR)
+- Default baud rate 115200 (в моем форке так)
+- Needs carriage return (CR) (В моем форке полностью рабочий парсинг в отличии от оригинала)
 - Make sure serial is enabled (user in dialout group)
 - Check out the original readme for more
 
-
-## TODO (maybe)
-- Document PID tuning
-- Make the speed input counts per second
-- Add/test more driver boards
-- Add/test other functionality
+# Что я сделал в этом форке:
+ - Переделан код исключительно под Xtensa (ESP32), был AVR. Из-за оригинального предл=назначения для AVR, были несовместимости с Xtensa.
+ - Полностью рабочий парсинг (В оригинале, были ошибки при отправке команды: `Ivalid command`).
+ - Не используется `INPUT_PULLUP` режим для энкодеров, т.к. изначально модули имеют свои резисторы.
+ - Убран лишний код полностью. Не используются сервы и дргуие датчики.
